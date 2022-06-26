@@ -1,4 +1,4 @@
-#The project is hosted at https://spotifyplaylistmaker.surge.sh/
+# The project is hosted at https://spotifyplaylistmaker.surge.sh/
 
 
 # Getting Started with Create React App
