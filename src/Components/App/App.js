@@ -5,6 +5,7 @@ import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
 import React from 'react';
 import Spotify from '../../util/Spotify';
+import UserInfo from '../UserInfo/UserInfo';
 class App extends React.Component {
 
   constructor(props){
@@ -17,7 +18,8 @@ class App extends React.Component {
       
       ],
     
-      PlaylistName: "Playlist Name"
+      PlaylistName: "Playlist Name",
+      UserName: "null"
     }
 
 
@@ -26,6 +28,7 @@ class App extends React.Component {
     this.updatePlaylistName= this.updatePlaylistName.bind(this);
     this.savePlaylist=this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.setUserName = this.setUserName.bind(this);
   }
 
   addTrack(track){
@@ -36,7 +39,9 @@ class App extends React.Component {
       this.setState( 
         prevState=>({
           
-          ...prevState.SearchResults,
+          SearchResults:this.state.SearchResults.filter(keeptrack=>{
+            return keeptrack.id !== track.id;
+          }),
 
           PlaylistResults:[
             ...prevState.PlaylistResults,
@@ -44,7 +49,8 @@ class App extends React.Component {
 
 
           ],
-          ...prevState.PlaylistName
+          ...prevState.PlaylistName,
+          ...prevState.UserName
         }
         )
       )
@@ -55,11 +61,13 @@ class App extends React.Component {
     
       this.setState(
         prevState=>({
-          ...prevState.SearchResults,
+          SearchResults:[track,...prevState.SearchResults],
+
           PlaylistResults: this.state.PlaylistResults.filter(saveTrack=>{
             return saveTrack.id !== track.id;
           }),
-          ...prevState.PlaylistName
+          ...prevState.PlaylistName,
+          ...prevState.UserName
         })
       )
   }
@@ -70,7 +78,8 @@ class App extends React.Component {
       prevState=>({
           ...prevState.SearchResults,
           ...prevState.PlaylistResults,
-          PlaylistName: playlistName
+          PlaylistName: playlistName,
+          ...prevState.UserName
 
 
 
@@ -100,21 +109,43 @@ class App extends React.Component {
     
     Spotify.search(searchTerm).then(resultsArray=>{
       this.setState({SearchResults: resultsArray})
-    });
-    
-    
+    });  
+  }
 
+  setUserName(){
 
+    Spotify.getUserInfo().then(username=>{
+      this.setState({UserName: username})
+    })
+    
+  }
+  componentDidMount(){
+    window.addEventListener('load', this.setUserName);
+  }
+
+  componentWillUnmount(){
+    window.addEventListener('load',this.setUserName);
   }
 
   render(){
       return (
         //add SearchBar component before App-playlist div
-        //add both SearchResults and Playlist in the App-playlist div
-
+        //add both SearchResults and Playlist in the App-playlist div     <UserInfo UserInfo={this.state.UserName}/>
+        //<div className="header">
+        // <h1 className="title">Spotify <span className ="highlight">Playlist</span> Maker </h1>
+        // </div>
+        // <div className='userInfo'>
+        //   <h2>Hello World</h2>
+          
+        // </div>
         <div>
-          <h1>Spotify <span className ="highlight">Playlist</span> Maker</h1>
+          <div className='header'>
+            <div className='userInfo'><UserInfo UserInfo={this.state.UserName}/></div>
+            <h1 className='title'>Spotify <span className ="highlight">Playlist</span> Maker </h1>
+          </div>
+        
           <div className='App'>
+            
             <SearchBar onSearch={this.search} />
             <div className='App-playlist'>
               <SearchResults SearchResults={this.state.SearchResults} onAdd={this.addTrack}/>

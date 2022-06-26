@@ -1,0 +1,13 @@
+.userInfo{
+    float:right;
+    color: white;
+    padding-top: 11.5px;
+    padding-right: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+}
+
+.highlightname{
+    color:#1DB954;
+    text-decoration: underline;
+}

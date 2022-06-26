@@ -21,12 +21,15 @@ const Spotify = {
             window.setTimeout(() => accessToken = '', expiresIn * 1000);
             //wipe the parameters from URL so website does not try to get token after expiry
             window.history.pushState('Access Token', null, '/');
+            window.addEventListener('load',Spotify.getUserInfo());
+            return accessToken;
         }else{
             //redirect URL 
-            const redirectURL=  `https://accounts.spotify.com/authorize?client_id=${applicationClientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
+            const redirectURL=  `https://accounts.spotify.com/authorize?client_id=${applicationClientID}&response_type=token&scope=playlist-read-private&redirect_uri=${redirectURI}`;
             window.location = redirectURL;
         }
-
+        
+        
 
           
     },
@@ -112,10 +115,24 @@ const Spotify = {
         }catch(error){
             console.log(error);
         }
-    }
+    },
     
 
+    async getUserInfo(){
+        try{
+            let userName;
+            const recievedAccessToken = Spotify.getAccessToken();
+            const headers= {Authorization: `Bearer ${recievedAccessToken}`};
+            const response = await fetch('https://api.spotify.com/v1/me',{headers:headers})
+            const jsonRespose = await response.json();
+            userName = jsonRespose.display_name;
+            
+            return userName;
+        }catch(error){
+            console.log(error)
+        }
 
+    }
 
 };
 

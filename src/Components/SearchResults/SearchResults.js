@@ -14,8 +14,6 @@ class SearchResults extends React.Component{
 
             </div>
 
-
-
         );
     }
 }
