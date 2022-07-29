@@ -3,7 +3,8 @@ let accessToken;
 const applicationClientID = 'e61497f0fa7c4a01baae6acfed3ee1f5';
 //const redirectURI = "http://localhost:3000/";
 //domainNAME.surge.sh
-const redirectURI = "https://spotifyplaylistmaker.surge.sh/";
+//const redirectURI = "https://spotifyplaylistmaker.surge.sh/";
+const redirectURI= "https://spotifyplaylistmaker.netlify.app/";
 const Spotify = {
     getAccessToken(){
         if(accessToken){
