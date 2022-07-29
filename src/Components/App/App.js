@@ -101,6 +101,7 @@ class App extends React.Component {
         PlaylistResults:[],
         PlaylistName:'Playlist Name'
       })
+      alert("Playlist Added Successfully");
     })
     
     

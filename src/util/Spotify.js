@@ -25,7 +25,7 @@ const Spotify = {
             return accessToken;
         }else{
             //redirect URL 
-            const redirectURL=  `https://accounts.spotify.com/authorize?client_id=${applicationClientID}&response_type=token&scope=playlist-read-private&redirect_uri=${redirectURI}`;
+            const redirectURL=  `https://accounts.spotify.com/authorize?client_id=${applicationClientID}&response_type=token&scope=playlist-read-private playlist-modify&redirect_uri=${redirectURI}`;
             window.location = redirectURL;
         }
         
@@ -88,18 +88,24 @@ const Spotify = {
             const recievedAccessToken = Spotify.getAccessToken();
             const headers= {Authorization: `Bearer ${recievedAccessToken}`};
             let userID;
-
+           
+            
             const response = await fetch('https://api.spotify.com/v1/me',{headers:headers})
             const jsonRespose = await response.json();
             userID = jsonRespose.id;
+            
+            //creates the playlist
             const response_1 = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`,{
                 headers:headers,
                 method:'POST',
                 //body here will be name of the playlist stored in object in this.state where it is called "PlaylistName"
                 body: JSON.stringify({name:name})
             })
+
             const jsonResponse_1 = await response_1.json();
+            
             const playlistID= jsonResponse_1.id;
+            //adds the tracks to the playlist 
             const trackReturn = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`,{
                 headers:headers,
                 method:'POST',
@@ -138,3 +144,4 @@ const Spotify = {
 
 
 export default Spotify;
+
