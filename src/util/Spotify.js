@@ -132,7 +132,7 @@ const Spotify = {
             const headers= {Authorization: `Bearer ${recievedAccessToken}`};
             const response = await fetch('https://api.spotify.com/v1/me',{headers:headers})
             const jsonRespose = await response.json();
-            userName = jsonRespose.display_name;
+            userName = jsonRespose.id;
             
             return userName;
         }catch(error){
