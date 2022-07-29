@@ -1,4 +1,5 @@
-# The project is hosted at https://spotifyplaylistmaker.netlify.app/
+# The project is hosted at https://spotifyplaylistmaker.netlify.app/ 
+# This project will not successfully log you in if you are not part of the users identified in the developer mode sorry :(
 
 
 # Getting Started with Create React App
